@@ -1,0 +1,64 @@
+[gd_scene load_steps=7 format=3 uid="uid://sqi3ggdf8gcs"]
+
+[ext_resource type="Script" path="res://FlightModelV1.gd" id="1_22vd2"]
+[ext_resource type="Texture2D" uid="uid://bsa8ksveitkyk" path="res://addons/kenney_prototype_textures/orange/texture_02.png" id="2_85qfr"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ghqgg"]
+friction = 0.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_8w4gj"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_6on22"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_adshf"]
+albedo_texture = ExtResource("2_85qfr")
+uv1_scale = Vector3(1.16, 1.16, 1.16)
+
+[node name="Airplane" type="RigidBody3D"]
+mass = 3500.0
+physics_material_override = SubResource("PhysicsMaterial_ghqgg")
+script = ExtResource("1_22vd2")
+pitch_sensitivity = 0.05
+roll_sensitivity = 0.05
+AoA_to_lift = Array[Vector2]([Vector2(-19, -1.2), Vector2(0, 0), Vector2(19, 1.2)])
+max_thrust = 50000.0
+wing_area = 10.0
+wing_lift_multiplier = 1.2
+wing_drag_multiplier = 0.1
+wing_roll_multiplier = 0.005
+vertical_stabilizer_multiplier = 0.1
+horizontal_stabilizer_multiplier = 0.05
+elevator_max_lift_coeficient = 0.1
+elevator_min_lift_coeficient = -0.1
+elevator_force_multiplier = 0.1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_8w4gj")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D"]
+mesh = SubResource("SphereMesh_6on22")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_adshf")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-1, 5.53401e-08, -1.40489e-07, 0, 0.930418, 0.366501, 1.50996e-07, 0.366501, -0.930418, 0, 2.26973, -4.26653)
+fov = 90.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="AoA" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Lift" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Speed" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Alt" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Controls" type="Label" parent="VBoxContainer"]
+layout_mode = 2
