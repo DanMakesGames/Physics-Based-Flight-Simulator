@@ -17,20 +17,18 @@ uv1_scale = Vector3(1.16, 1.16, 1.16)
 [node name="Airplane" type="RigidBody3D"]
 mass = 3500.0
 physics_material_override = SubResource("PhysicsMaterial_ghqgg")
-angular_damp = 2.0
 script = ExtResource("1_22vd2")
 pitch_sensitivity = 0.05
 roll_sensitivity = 0.05
 AoA_to_lift = Array[Vector2]([Vector2(-19, -1.2), Vector2(0, 0), Vector2(19, 1.2)])
-AoA_to_lift_elivator = Array[Vector2]([Vector2(-19, -1.2), Vector2(0, 0.2), Vector2(19, 1.2)])
-max_thrust = 30000.0
-wing_area = 20.0
-wing_lift_multiplier = 5.0
+max_thrust = 50000.0
+wing_area = 10.0
+wing_lift_multiplier = 1.2
 wing_drag_multiplier = 0.1
 wing_roll_multiplier = 0.005
 vertical_stabilizer_multiplier = 0.1
-horizontal_stabilizer_multiplier = 0.001
-elevator_force_multiplier = 0.05
+horizontal_stabilizer_multiplier = 0.05
+elevator_force_multiplier = 0.1
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_8w4gj")

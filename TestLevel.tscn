@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bjrs1env65som"]
+[gd_scene load_steps=10 format=3 uid="uid://bjrs1env65som"]
 
 [ext_resource type="Texture2D" uid="uid://dkk2138ifdtxi" path="res://addons/kenney_prototype_textures/dark/texture_03.png" id="1_pafyq"]
 [ext_resource type="PackedScene" uid="uid://sqi3ggdf8gcs" path="res://AirplaneV1.tscn" id="2_bg3cc"]
@@ -25,8 +25,11 @@ radiance_size = 5
 background_mode = 2
 sky = SubResource("Sky_okwc5")
 
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_fls1n"]
+friction = 0.0
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_mxrn6"]
-size = Vector3(5000, 1, 5000)
+size = Vector3(100000, 1, 100000)
 
 [node name="Node3D" type="Node3D"]
 
@@ -38,9 +41,10 @@ surface_material_override/0 = SubResource("StandardMaterial3D_6ihpq")
 environment = SubResource("Environment_i1ygb")
 
 [node name="Airplane" parent="." instance=ExtResource("2_bg3cc")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.147, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
+physics_material_override = SubResource("PhysicsMaterial_fls1n")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 shape = SubResource("BoxShape3D_mxrn6")
