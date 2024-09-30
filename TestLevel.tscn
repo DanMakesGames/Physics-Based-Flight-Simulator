@@ -41,7 +41,8 @@ surface_material_override/0 = SubResource("StandardMaterial3D_6ihpq")
 environment = SubResource("Environment_i1ygb")
 
 [node name="Airplane" parent="." instance=ExtResource("2_bg3cc")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 689.413, 0)
+linear_velocity = Vector3(0, 0, 100)
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 physics_material_override = SubResource("PhysicsMaterial_fls1n")

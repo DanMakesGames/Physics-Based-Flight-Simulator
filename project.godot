@@ -65,3 +65,4 @@ reset_pitch={
 [physics]
 
 3d/physics_engine="Rapier3D"
+3d/solver/solver_iterations=26
