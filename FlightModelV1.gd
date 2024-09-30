@@ -45,9 +45,9 @@ var direct_control = false
 @export var elevator_force_multiplier : float = 1
 @export var aileron_max_angle : float = 5
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
+var left_wing : Airfoil
+var right_wing : Airfoil
+var elevator_wing : Airfoil
 
 func _physics_process(delta: float) -> void:
 	process_input(delta)
@@ -156,7 +156,6 @@ func update_horizontal_stabilizers():
 
 func update_wings():
 	# Lift Calculations
-	var plane_space : Basis = Basis(quaternion)
 	var local_velocity = linear_velocity * basis.orthonormalized()
 	var wing_local_velocity = local_velocity
 	wing_local_velocity.x = 0

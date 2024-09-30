@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://sqi3ggdf8gcs"]
+[gd_scene load_steps=8 format=3 uid="uid://sqi3ggdf8gcs"]
 
 [ext_resource type="Script" path="res://FlightModelV1.gd" id="1_22vd2"]
 [ext_resource type="Texture2D" uid="uid://bsa8ksveitkyk" path="res://addons/kenney_prototype_textures/orange/texture_02.png" id="2_85qfr"]
+[ext_resource type="Script" path="res://Airfoil.gd" id="3_8qea4"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ghqgg"]
 friction = 0.0
@@ -62,3 +63,6 @@ layout_mode = 2
 
 [node name="Controls" type="Label" parent="VBoxContainer"]
 layout_mode = 2
+
+[node name="left_wing" type="Node" parent="."]
+script = ExtResource("3_8qea4")
