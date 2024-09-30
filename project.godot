@@ -64,5 +64,10 @@ reset_pitch={
 
 [physics]
 
+common/physics_ticks_per_second=120
+common/max_physics_steps_per_frame=16
 3d/physics_engine="Rapier3D"
 3d/solver/solver_iterations=26
+rapier/solver/num_internal_pgs_iterations=2
+rapier/solver/num_internal_stabilization_iterations=4
+rapier/solver/num_iterations=8

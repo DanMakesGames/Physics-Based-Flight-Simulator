@@ -72,5 +72,6 @@ func aerodynamic_update(delta : float):
 	elevator_wing.update_physics(self, delta)
 	
 	var pitch_velocity = angular_velocity.dot(basis.x)
+	HUD_lift.text = "Wing Lift: %f, Elv Lift: %f" % [left_wing.lift_out.length() + right_wing.lift_out.length(), elevator_wing.lift_out.length()]
 	HUD_Speed.text = "Speed: %f, Pitch Vel: %f" % [linear_velocity.length(), rad_to_deg(pitch_velocity)]
 	HUD_Alt.text = "Alt: %f, Pitch %f" % [position.y, rad_to_deg(rotation.x)]

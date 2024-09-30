@@ -7,11 +7,9 @@
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ghqgg"]
 friction = 0.0
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_4psmo"]
-size = Vector3(1, 1, 7.15076)
+[sub_resource type="SphereShape3D" id="SphereShape3D_gctro"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_jpds0"]
-size = Vector3(1, 1, 7.395)
+[sub_resource type="SphereMesh" id="SphereMesh_4hllk"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_adshf"]
 albedo_texture = ExtResource("2_85qfr")
@@ -21,15 +19,15 @@ uv1_scale = Vector3(1.16, 1.16, 1.16)
 mass = 5000.0
 physics_material_override = SubResource("PhysicsMaterial_ghqgg")
 linear_damp = 0.1
-angular_damp = 10.0
+angular_damp = 50.0
 script = ExtResource("1_22vd2")
 pitch_sensitivity = 0.5
 roll_sensitivity = 0.05
-max_thrust = 80000.0
+max_thrust = 200000.0
 wing_area = 20.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("BoxShape3D_4psmo")
+shape = SubResource("SphereShape3D_gctro")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(-1, 5.53401e-08, -1.40489e-07, 0, 0.930418, 0.366501, 1.50996e-07, 0.366501, -0.930418, 0, 2.26973, -4.26653)
@@ -59,24 +57,21 @@ script = ExtResource("3_8qea4")
 wing_area = 20.0
 camber = 5.0
 drag_multiplier = 0.5
-max_lift_force = 100000.0
 
 [node name="right_wing" type="Node" parent="."]
 script = ExtResource("3_8qea4")
 wing_area = 20.0
 camber = 5.0
 drag_multiplier = 0.5
-max_lift_force = 100000.0
 
 [node name="elevator_wing" type="Node" parent="."]
 script = ExtResource("3_8qea4")
 AoA_max = 15.0
-lift_coefficient_max = 0.5
-wing_area = 5.0
+lift_coefficient_max = 1.0
 local_offset = Vector3(0, 0, -1)
-drag_multiplier = 2.0
-max_lift_force = 500000.0
+drag_multiplier = 0.1
+lift_multiplier = 0.1
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("BoxMesh_jpds0")
+mesh = SubResource("SphereMesh_4hllk")
 surface_material_override/0 = SubResource("StandardMaterial3D_adshf")
