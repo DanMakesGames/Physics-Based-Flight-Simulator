@@ -7,6 +7,7 @@ extends Object
 @export var wing_area : float = 1
 @export var camber : float = 0
 @export var local_offset : Vector3 = Vector3.ZERO
+@export var drag_zero_AoA : float = 0.025
 @export var drag_multiplier : float = 1.0
 @export var lift_multiplier : float = 1.0
 
@@ -36,7 +37,7 @@ func update_physics(body : RigidBody3D, delta:float):
 	body.apply_force(lift_force, global_offset)
 	
 	# Drag
-	var drag_coefficient = absf(Vector3(0,1,0).dot(local_velocity.normalized()))
+	var drag_coefficient = absf(Vector3(0,1,0).dot(local_velocity.normalized())) + drag_zero_AoA
 	var drag_force_magnitude = drag_coefficient * local_velocity.length_squared() * 0.5 * wing_area * drag_multiplier
 	
 	# drag is in the opposite direction of flow
