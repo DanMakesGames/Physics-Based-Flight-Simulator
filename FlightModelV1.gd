@@ -60,12 +60,18 @@ func process_input(delta : float) -> void:
 	throttle = minf(maxf(throttle + throttle_sensitivity * throttle_input, 0),1)
 
 func aerodynamic_update(delta : float):
+	#
+	
 	# Thrust Calculations
 	var thrust_magnitude = max_thrust * throttle
 	var thrust : Vector3 = basis.z.normalized() * thrust_magnitude
 	apply_central_force(thrust)
 	
+	var aileron_angle : float = ailerons * aileron_max_angle
+	left_wing.camber = aileron_angle
 	left_wing.update_physics(self, delta)
+	
+	right_wing.camber = -aileron_angle
 	right_wing.update_physics(self, delta)
 	
 	elevator_wing.camber = elevator * 5
@@ -76,6 +82,11 @@ func aerodynamic_update(delta : float):
 	var body_drag_force : Vector3 = linear_velocity.normalized() * -1.0 * body_drag_force_magnitude
 	apply_central_force(body_drag_force)
 	
+	# body roll
+	var roll_velocity : float = angular_velocity.dot(basis.z)
+	var roll_dampening : float = pow(roll_velocity,2) * -1.0 * signf(roll_velocity)
+	apply_torque(basis.z.normalized() * roll_dampening)
+	
 	var local_velocity = linear_velocity * basis.orthonormalized()
 	
 	var AoA_sign = -signf(local_velocity.y)
@@ -85,4 +96,4 @@ func aerodynamic_update(delta : float):
 	HUD_AoA.text = "AoA %f, %f" % [AoA, 1.0/delta]
 	HUD_lift.text = "Wing Lift: %f, Elv Lift: %f, Elv Drag %f" % [left_wing.lift_out.length() + right_wing.lift_out.length(), elevator_wing.lift_out.dot(basis.y), elevator_wing.drag_out.dot(basis.y)]
 	HUD_Speed.text = "Speed: %f, Pitch Vel: %f" % [linear_velocity.length(), rad_to_deg(pitch_velocity)]
-	HUD_Alt.text = "Alt: %f, Pitch %f" % [position.y, rad_to_deg(rotation.x)]
+	HUD_Alt.text = "Alt: %f, Pitch %f, Roll %f" % [position.y, rad_to_deg(rotation.x), rad_to_deg(rotation.z)]
