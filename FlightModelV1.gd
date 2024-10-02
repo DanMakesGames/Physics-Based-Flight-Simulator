@@ -26,6 +26,7 @@ var direct_control = false
 @export_group("Aerodynamics")
 @export var max_thrust : float = 0
 @export var aileron_max_angle : float = 5
+@export var body_drag : float = 1
 
 func _physics_process(delta: float) -> void:
 	process_input(delta)
@@ -70,13 +71,18 @@ func aerodynamic_update(delta : float):
 	elevator_wing.camber = elevator * 5
 	elevator_wing.update_physics(self, delta)
 	
+	# body drag
+	var body_drag_force_magnitude : float = linear_velocity.length_squared() *  body_drag
+	var body_drag_force : Vector3 = linear_velocity.normalized() * -1.0 * body_drag_force_magnitude
+	apply_central_force(body_drag_force)
+	
 	var local_velocity = linear_velocity * basis.orthonormalized()
 	
 	var AoA_sign = -signf(local_velocity.y)
 	var AoA = rad_to_deg(local_velocity.angle_to(Vector3(0,0,1))) * AoA_sign
 	
 	var pitch_velocity = angular_velocity.dot(basis.x)
-	HUD_AoA.text = "AoA %f" % AoA
+	HUD_AoA.text = "AoA %f, %f" % [AoA, 1.0/delta]
 	HUD_lift.text = "Wing Lift: %f, Elv Lift: %f, Elv Drag %f" % [left_wing.lift_out.length() + right_wing.lift_out.length(), elevator_wing.lift_out.dot(basis.y), elevator_wing.drag_out.dot(basis.y)]
 	HUD_Speed.text = "Speed: %f, Pitch Vel: %f" % [linear_velocity.length(), rad_to_deg(pitch_velocity)]
 	HUD_Alt.text = "Alt: %f, Pitch %f" % [position.y, rad_to_deg(rotation.x)]

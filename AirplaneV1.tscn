@@ -18,12 +18,12 @@ uv1_scale = Vector3(1.16, 1.16, 1.16)
 [node name="Airplane" type="RigidBody3D"]
 mass = 3500.0
 physics_material_override = SubResource("PhysicsMaterial_ghqgg")
-linear_damp = 0.1
-angular_damp = 10.0
+linear_damp = 0.01
+angular_damp = 1.0
 script = ExtResource("1_22vd2")
-pitch_sensitivity = 0.05
 roll_sensitivity = 0.05
-max_thrust = 400000.0
+max_thrust = 200000.0
+body_drag = 0.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_gctro")
@@ -53,23 +53,31 @@ layout_mode = 2
 
 [node name="left_wing" type="Node" parent="."]
 script = ExtResource("3_8qea4")
-wing_area = 40.0
-camber = 1.0
-drag_multiplier = 0.5
+AoA_max = 19.0
+lift_coefficient_max = 1.36
+lift_coefficient_zero_AOA = 0.163
+wing_area = 10.0
+drag_zero_AoA = 0.005
+drag_multiplier = 0.07
 
 [node name="right_wing" type="Node" parent="."]
 script = ExtResource("3_8qea4")
-wing_area = 40.0
-camber = 1.0
-drag_multiplier = 0.5
+AoA_max = 19.0
+lift_coefficient_max = 1.36
+lift_coefficient_zero_AOA = 0.163
+wing_area = 10.0
+drag_zero_AoA = 0.005
+drag_multiplier = 0.07
 
 [node name="elevator_wing" type="Node" parent="."]
 script = ExtResource("3_8qea4")
-AoA_max = 15.0
-lift_coefficient_max = 1.0
-local_offset = Vector3(0, 0, -1)
-drag_multiplier = 0.05
-lift_multiplier = 0.1
+AoA_max = 19.0
+lift_coefficient_max = 0.18
+wing_area = 0.5
+local_offset = Vector3(0, 0, -7)
+drag_zero_AoA = 0.005
+drag_multiplier = 0.01
+lift_multiplier = 0.01
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_4hllk")
