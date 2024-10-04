@@ -80,3 +80,6 @@ local_offset = Vector3(0, 0, -7)
 drag_zero_AoA = 0.005
 drag_multiplier = 0.01
 lift_multiplier = 0.01
+
+[node name="vertical_stabilizer_wing" type="Node" parent="."]
+script = ExtResource("3_8qea4")

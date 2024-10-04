@@ -2,6 +2,7 @@ class_name Airfoil
 extends Node
 
 @export_group("Aerodynamics")
+@export var normal : Vector3 = Vector3(0,1,0)
 @export var AoA_max : float = 20
 @export var lift_coefficient_max : float = 1.2
 @export var lift_coefficient_zero_AOA : float = 0
@@ -20,12 +21,15 @@ var last_AoA : float
 func update_physics(body : RigidBody3D, delta:float):
 	var global_offset = body.basis.orthonormalized() * local_offset
 	var local_velocity = body.linear_velocity * body.basis.orthonormalized()
+	# lift only cares about the airflow passing over the airfoil. DO NOT use the for drag
+	var local_flow_velocity = local_velocity
+	local_flow_velocity.x = 0
 	
-	var AoA_sign = -signf(local_velocity.y)
-	var AoA = rad_to_deg(local_velocity.angle_to(Vector3(0,0,1))) * AoA_sign
+	var AoA_sign = -signf(local_flow_velocity.y)
+	var AoA = rad_to_deg(local_flow_velocity.angle_to(Vector3(0,0,1))) * AoA_sign
 	AoA += camber
 	
-	if absf(AoA) > AoA_max and is_zero_approx(local_velocity.length()) != true:
+	if absf(AoA) > AoA_max and is_zero_approx(local_flow_velocity.length()) != true:
 		print("Stall: %s AOA: %f->%f Lift_Orth: %f, Drag_Orth: %f" % [name,last_AoA, AoA, lift_out.dot(body.basis.y), drag_out.dot(body.basis.y)] )
 	
 	# Lift
@@ -37,10 +41,10 @@ func update_physics(body : RigidBody3D, delta:float):
 			lift_coefficient = remap(AoA, 0, AoA_max, lift_coefficient_zero_AOA, lift_coefficient_max)
 			
 	# Bernoulli equation
-	var lift_force_magnitude : float = lift_coefficient * local_velocity.length_squared() * 0.5 * wing_area * lift_multiplier
+	var lift_force_magnitude : float = lift_coefficient * local_flow_velocity.length_squared() * 0.5 * wing_area * lift_multiplier
 	
 	# lift is perpendicular to the flow
-	var local_lift_normal = local_velocity.normalized().cross(Vector3(1,0,0)).normalized()
+	var local_lift_normal = local_flow_velocity.normalized().cross(Vector3(1,0,0)).normalized()
 	var lift_force : Vector3 = (body.basis.orthonormalized() * local_lift_normal) * lift_force_magnitude
 	lift_out = lift_force
 	body.apply_force(lift_force, global_offset)

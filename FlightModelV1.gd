@@ -5,9 +5,11 @@ extends RigidBody3D
 @onready var HUD_Speed = $VBoxContainer/Speed
 @onready var HUD_Alt = $VBoxContainer/Alt
 @onready var HUD_Controls = $VBoxContainer/Controls
+
 @onready var left_wing = $left_wing
 @onready var right_wing = $right_wing
 @onready var elevator_wing = $elevator_wing
+@onready var vertical_stabilizer_wing = $vertical_stabilizer_wing
 
 var pitch_input : float = 0
 var roll_input : float = 0
@@ -62,8 +64,6 @@ func process_input(delta : float) -> void:
 	throttle = minf(maxf(throttle + throttle_sensitivity * throttle_input, 0),1)
 
 func aerodynamic_update(delta : float):
-	#
-	
 	# Thrust Calculations
 	var thrust_magnitude = max_thrust * throttle
 	var thrust : Vector3 = basis.z.normalized() * thrust_magnitude
@@ -89,8 +89,9 @@ func aerodynamic_update(delta : float):
 	var roll_dampening_magnitude : float = pow(roll_velocity,2) * -1.0 * signf(roll_velocity) * roll_dampening
 	apply_torque(basis.z.normalized() * roll_dampening_magnitude)
 	
-	var local_velocity = linear_velocity * basis.orthonormalized()
+	#vertical_stabilizer_wing.update_physics(self, delta)
 	
+	var local_velocity = linear_velocity * basis.orthonormalized()
 	var AoA_sign = -signf(local_velocity.y)
 	var AoA = rad_to_deg(local_velocity.angle_to(Vector3(0,0,1))) * AoA_sign
 	
