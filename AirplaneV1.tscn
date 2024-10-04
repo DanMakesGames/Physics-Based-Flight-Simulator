@@ -1,7 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://sqi3ggdf8gcs"]
+[gd_scene load_steps=6 format=3 uid="uid://sqi3ggdf8gcs"]
 
 [ext_resource type="Script" path="res://FlightModelV1.gd" id="1_22vd2"]
-[ext_resource type="Texture2D" uid="uid://bsa8ksveitkyk" path="res://addons/kenney_prototype_textures/orange/texture_02.png" id="2_85qfr"]
+[ext_resource type="ArrayMesh" uid="uid://pofjh8mevdui" path="res://Szabla1.obj" id="2_mqwpo"]
 [ext_resource type="Script" path="res://Airfoil.gd" id="3_8qea4"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ghqgg"]
@@ -9,28 +9,24 @@ friction = 0.0
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_gctro"]
 
-[sub_resource type="SphereMesh" id="SphereMesh_4hllk"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_adshf"]
-albedo_texture = ExtResource("2_85qfr")
-uv1_scale = Vector3(1.16, 1.16, 1.16)
-
 [node name="Airplane" type="RigidBody3D"]
 mass = 3500.0
 physics_material_override = SubResource("PhysicsMaterial_ghqgg")
 angular_damp = 1.0
 script = ExtResource("1_22vd2")
-roll_sensitivity = 0.05
-max_thrust = 200000.0
+pitch_sensitivity = 1.0
+max_thrust = 100000.0
 aileron_max_angle = 0.1
-body_drag = 0.1
+body_drag = 0.01
+roll_dampening = 4.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_gctro")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-1, 5.53401e-08, -1.40489e-07, 0, 0.930418, 0.366501, 1.50996e-07, 0.366501, -0.930418, 0, 2.26973, -4.26653)
+transform = Transform3D(-1, 5.53402e-08, -1.40489e-07, 0, 0.930418, 0.366501, 1.50996e-07, 0.366501, -0.930418, 0, 4.34524, -8.45866)
 fov = 90.0
+far = 100000.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 offset_right = 40.0
@@ -52,8 +48,8 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("SphereMesh_4hllk")
-surface_material_override/0 = SubResource("StandardMaterial3D_adshf")
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+mesh = ExtResource("2_mqwpo")
 
 [node name="left_wing" type="Node" parent="."]
 script = ExtResource("3_8qea4")
