@@ -1,17 +1,19 @@
 class_name Airfoil
-extends Node
+extends Node3D
+
+## it is assumed the surface normal of all airfoils is (0,1,0). Rotate the airfoil
+## to achieve the desired effect.
 
 @export_group("Aerodynamics")
-@export var normal : Vector3 = Vector3(0,1,0)
 @export var AoA_max : float = 20
 @export var lift_coefficient_max : float = 1.2
 @export var lift_coefficient_zero_AOA : float = 0
 @export var wing_area : float = 1
-@export var local_offset : Vector3 = Vector3.ZERO
 @export var drag_zero_AoA : float = 0.025
 @export var drag_multiplier : float = 1.0
 @export var lift_multiplier : float = 1.0
 
+## in degrees
 var camber : float = 0
 
 var lift_out : Vector3
@@ -19,8 +21,8 @@ var drag_out : Vector3
 var last_AoA : float
 
 func update_physics(body : RigidBody3D, delta:float):
-	var global_offset = body.basis.orthonormalized() * local_offset
-	var local_velocity = body.linear_velocity * body.basis.orthonormalized()
+	var global_offset = global_position - body.global_position
+	var local_velocity = body.linear_velocity * global_basis.orthonormalized()
 	# lift only cares about the airflow passing over the airfoil. DO NOT use the for drag
 	var local_flow_velocity = local_velocity
 	local_flow_velocity.x = 0
@@ -45,7 +47,7 @@ func update_physics(body : RigidBody3D, delta:float):
 	
 	# lift is perpendicular to the flow
 	var local_lift_normal = local_flow_velocity.normalized().cross(Vector3(1,0,0)).normalized()
-	var lift_force : Vector3 = (body.basis.orthonormalized() * local_lift_normal) * lift_force_magnitude
+	var lift_force : Vector3 = (global_basis.orthonormalized() * local_lift_normal) * lift_force_magnitude
 	lift_out = lift_force
 	body.apply_force(lift_force, global_offset)
 	
@@ -54,7 +56,12 @@ func update_physics(body : RigidBody3D, delta:float):
 	var drag_force_magnitude = drag_coefficient * local_velocity.length_squared() * 0.5 * wing_area * drag_multiplier
 	
 	# drag is in the opposite direction of flow
-	var drag_force = (body.basis.orthonormalized() * local_velocity.normalized()).normalized() * -1.0 * drag_force_magnitude
+	var drag_force = (global_basis.orthonormalized() * local_velocity.normalized()).normalized() * -1.0 * drag_force_magnitude
 	drag_out = drag_force
 	last_AoA = AoA
 	body.apply_force(drag_force, global_offset)
+
+func get_debug_string() -> String:
+	var lift_orth : float = lift_out.dot(global_basis.orthonormalized().y)
+	var drag_orth = drag_out.dot(global_basis.orthonormalized().y)
+	return "%s: Lift_Orth: %20.8f, Drag_Orth: %20.8f" % [name, lift_orth, drag_orth]

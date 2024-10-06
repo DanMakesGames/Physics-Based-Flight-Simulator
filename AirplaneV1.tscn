@@ -32,54 +32,50 @@ far = 100000.0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="AoA" type="Label" parent="VBoxContainer"]
-layout_mode = 2
-
-[node name="Lift" type="Label" parent="VBoxContainer"]
-layout_mode = 2
-
-[node name="Speed" type="Label" parent="VBoxContainer"]
-layout_mode = 2
-
-[node name="Alt" type="Label" parent="VBoxContainer"]
-layout_mode = 2
-
-[node name="Controls" type="Label" parent="VBoxContainer"]
+[node name="debug" type="Label" parent="VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
 mesh = ExtResource("2_mqwpo")
 
-[node name="left_wing" type="Node" parent="."]
+[node name="left_wing" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.01, 0, 0)
 script = ExtResource("3_8qea4")
 AoA_max = 19.0
 lift_coefficient_max = 1.36
 lift_coefficient_zero_AOA = 0.163
 wing_area = 10.0
-local_offset = Vector3(0.01, 0, 0)
 drag_zero_AoA = 0.005
 drag_multiplier = 0.07
 
-[node name="right_wing" type="Node" parent="."]
+[node name="right_wing" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.01, 0, 0)
 script = ExtResource("3_8qea4")
 AoA_max = 19.0
 lift_coefficient_max = 1.36
 lift_coefficient_zero_AOA = 0.163
 wing_area = 10.0
-local_offset = Vector3(-0.01, 0, 0)
 drag_zero_AoA = 0.005
 drag_multiplier = 0.07
 
-[node name="elevator_wing" type="Node" parent="."]
+[node name="elevator_wing" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -7)
 script = ExtResource("3_8qea4")
 AoA_max = 19.0
 lift_coefficient_max = 0.18
 wing_area = 0.5
-local_offset = Vector3(0, 0, -7)
-drag_zero_AoA = 0.005
+drag_zero_AoA = 0.25
 drag_multiplier = 0.01
 lift_multiplier = 0.01
 
-[node name="vertical_stabilizer_wing" type="Node" parent="."]
+[node name="vertical_stabilizer_wing" type="Node3D" parent="."]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, -7)
 script = ExtResource("3_8qea4")
+AoA_max = 19.0
+lift_coefficient_max = 0.0
+wing_area = 0.5
+drag_zero_AoA = 0.25
+drag_multiplier = 0.01
+lift_multiplier = 0.0

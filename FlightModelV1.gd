@@ -1,10 +1,6 @@
 extends RigidBody3D
 
-@onready var HUD_AoA = $VBoxContainer/AoA
-@onready var HUD_lift = $VBoxContainer/Lift
-@onready var HUD_Speed = $VBoxContainer/Speed
-@onready var HUD_Alt = $VBoxContainer/Alt
-@onready var HUD_Controls = $VBoxContainer/Controls
+@onready var HUD_debug = %debug
 
 @onready var left_wing = $left_wing
 @onready var right_wing = $right_wing
@@ -32,6 +28,7 @@ var direct_control = false
 @export var roll_dampening : float = 2
 
 func _physics_process(delta: float) -> void:
+	HUD_debug.text = ""
 	process_input(delta)
 	aerodynamic_update(delta)
 
@@ -58,7 +55,7 @@ func process_input(delta : float) -> void:
 	if Input.get_action_strength("reset_pitch") > 0:
 		elevator = 0
 	
-	HUD_Controls.text = "elevator: %f, ailerons: %f" % [elevator, ailerons]
+	HUD_debug.text += "elevator: %f, ailerons: %f \n" % [elevator, ailerons]
 	
 	throttle_input = Input.get_axis("throttle_down", "throttle_up")
 	throttle = minf(maxf(throttle + throttle_sensitivity * throttle_input, 0),1)
@@ -89,14 +86,18 @@ func aerodynamic_update(delta : float):
 	var roll_dampening_magnitude : float = pow(roll_velocity,2) * -1.0 * signf(roll_velocity) * roll_dampening
 	apply_torque(basis.z.normalized() * roll_dampening_magnitude)
 	
-	#vertical_stabilizer_wing.update_physics(self, delta)
+	vertical_stabilizer_wing.update_physics(self, delta)
 	
 	var local_velocity = linear_velocity * basis.orthonormalized()
 	var AoA_sign = -signf(local_velocity.y)
 	var AoA = rad_to_deg(local_velocity.angle_to(Vector3(0,0,1))) * AoA_sign
 	
 	var pitch_velocity = angular_velocity.dot(basis.x)
-	HUD_AoA.text = "AoA %f, %f" % [AoA, 1.0/delta]
-	HUD_lift.text = "Wing Lift: %f, Elv Lift: %f, Elv Drag %f" % [left_wing.lift_out.length() + right_wing.lift_out.length(), elevator_wing.lift_out.dot(basis.y), elevator_wing.drag_out.dot(basis.y)]
-	HUD_Speed.text = "Speed: %f, Pitch Vel: %f" % [linear_velocity.length(), rad_to_deg(pitch_velocity)]
-	HUD_Alt.text = "Alt: %f, Pitch %f, Roll %f" % [position.y, rad_to_deg(basis.z.angle_to(Vector3(basis.z.x,0,basis.z.z).normalized())) * signf(basis.z.y), rad_to_deg(rotation.z)]
+	
+	if HUD_debug != null:
+		HUD_debug.text += "AoA %f, %f \n" % [AoA, 1.0/delta]
+		HUD_debug.text += "Wing Lift: %f \n" % [left_wing.lift_out.length() + right_wing.lift_out.length()]
+		HUD_debug.text += "Speed: %f, Pitch Vel: %f\n" % [linear_velocity.length(), rad_to_deg(pitch_velocity)]
+		HUD_debug.text += "Alt: %f, Pitch %f, Roll %f\n" % [position.y, rad_to_deg(basis.z.angle_to(Vector3(basis.z.x,0,basis.z.z).normalized())) * signf(basis.z.y), rad_to_deg(rotation.z)]
+		HUD_debug.text += elevator_wing.get_debug_string() + "\n"
+		HUD_debug.text += vertical_stabilizer_wing.get_debug_string() + "\n"
