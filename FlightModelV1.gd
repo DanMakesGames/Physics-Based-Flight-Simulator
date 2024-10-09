@@ -14,7 +14,6 @@ var throttle_input : float = 0
 var throttle : float = 0
 var elevator : float = 0
 var ailerons : float = 0
-var direct_control = false
 
 @export_group("Controls")
 @export var throttle_sensitivity : float = 1.0

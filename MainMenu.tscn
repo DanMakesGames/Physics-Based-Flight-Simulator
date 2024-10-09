@@ -1,9 +1,9 @@
 [gd_scene load_steps=2 format=3 uid="uid://sy6pgka0vbnk"]
 
-[ext_resource type="Script" path="res://multiplayer.gd" id="1_8gxla"]
+[ext_resource type="Script" path="res://main_menu.gd" id="1_dxpcd"]
 
 [node name="Multiplayer" type="Node2D"]
-script = ExtResource("1_8gxla")
+script = ExtResource("1_dxpcd")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 offset_left = -2.0
@@ -13,6 +13,7 @@ offset_bottom = 644.0
 alignment = 1
 
 [node name="StatusText" type="Label" parent="VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Welcome To My Test Game
 "
@@ -23,15 +24,21 @@ vertical_alignment = 1
 layout_mode = 2
 alignment = 1
 
-[node name="HostButton" type="Button" parent="VBoxContainer/HBoxContainer"]
-layout_mode = 2
-text = "Host"
-
 [node name="ConnectButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Connect"
 
-[node name="LineEdit" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
+[node name="StartButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
+text = "Start Game"
+
+[node name="IpLineEdit" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "127.0.0.1"
 placeholder_text = "Enter IP Here..."
 expand_to_text_length = true
+
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/ConnectButton" to="." method="_on_connect_button_pressed"]
