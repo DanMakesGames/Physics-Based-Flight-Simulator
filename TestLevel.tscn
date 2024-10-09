@@ -1,5 +1,6 @@
-[gd_scene load_steps=10 format=3 uid="uid://bjrs1env65som"]
+[gd_scene load_steps=11 format=3 uid="uid://bjrs1env65som"]
 
+[ext_resource type="Script" path="res://test_level.gd" id="1_o5sma"]
 [ext_resource type="Texture2D" uid="uid://dkk2138ifdtxi" path="res://addons/kenney_prototype_textures/dark/texture_03.png" id="1_pafyq"]
 [ext_resource type="PackedScene" uid="uid://sqi3ggdf8gcs" path="res://AirplaneV1.tscn" id="2_bg3cc"]
 
@@ -32,6 +33,7 @@ friction = 0.0
 size = Vector3(100000, 1, 100000)
 
 [node name="Node3D" type="Node3D"]
+script = ExtResource("1_o5sma")
 
 [node name="Floor" type="MeshInstance3D" parent="."]
 mesh = SubResource("PlaneMesh_itv2u")

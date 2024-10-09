@@ -42,3 +42,4 @@ placeholder_text = "Enter IP Here..."
 expand_to_text_length = true
 
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/ConnectButton" to="." method="_on_connect_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
