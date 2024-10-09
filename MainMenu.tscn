@@ -27,16 +27,19 @@ alignment = 1
 [node name="ConnectButton" type="Button" parent="VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+mouse_filter = 1
 text = "Connect"
 
 [node name="StartButton" type="Button" parent="VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+mouse_filter = 1
 text = "Start Game"
 
 [node name="IpLineEdit" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+mouse_filter = 1
 text = "127.0.0.1"
 placeholder_text = "Enter IP Here..."
 expand_to_text_length = true

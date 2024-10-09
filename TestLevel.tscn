@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://bjrs1env65som"]
+[gd_scene load_steps=12 format=3 uid="uid://bjrs1env65som"]
 
 [ext_resource type="Script" path="res://test_level.gd" id="1_o5sma"]
 [ext_resource type="Texture2D" uid="uid://dkk2138ifdtxi" path="res://addons/kenney_prototype_textures/dark/texture_03.png" id="1_pafyq"]
 [ext_resource type="PackedScene" uid="uid://sqi3ggdf8gcs" path="res://AirplaneV1.tscn" id="2_bg3cc"]
+[ext_resource type="PackedScene" uid="uid://cauyw4d3fwg6e" path="res://player_camera.tscn" id="4_pkceh"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_itv2u"]
 uv2_padding = 2.39
@@ -42,7 +43,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_6ihpq")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_i1ygb")
 
-[node name="Airplane" parent="." instance=ExtResource("2_bg3cc")]
+[node name="Airplane1" parent="." instance=ExtResource("2_bg3cc")]
 transform = Transform3D(1, 0, 0, 0, 0.999999, 0, 0, 0, 0.999999, 0, 0.0646519, 0)
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
@@ -50,3 +51,7 @@ physics_material_override = SubResource("PhysicsMaterial_fls1n")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 shape = SubResource("BoxShape3D_mxrn6")
+
+[node name="PlayerCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("4_pkceh")]
+default_distance = 20.0
+target = NodePath("../Airplane1")

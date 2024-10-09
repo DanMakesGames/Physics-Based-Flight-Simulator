@@ -18,6 +18,10 @@ func _ready() -> void:
 	
 	multiplayer.peer_connected.connect(on_peer_connected)
 	multiplayer.peer_disconnected.connect(on_peer_disconnected)
+	SyncManager.sync_lost.connect(on_sync_lost)
+	SyncManager.sync_regained.connect(on_sync_regained)
+	SyncManager.sync_error.connect(on_sync_error)
+	
 
 func initialize():
 	players_loaded = 0
@@ -78,3 +82,14 @@ func player_finished_loading():
 		print("Start Game")
 		SyncManager.start()
 	
+func on_sync_lost():
+	print("lost sync")
+
+func on_sync_regained():
+	print("sync regained")
+
+func on_sync_error(message:String):
+	print("Sync Error: " + message)
+	if multiplayer.multiplayer_peer:
+		multiplayer.multiplayer_peer.close()
+	SyncManager.clear_peers()

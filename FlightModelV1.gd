@@ -26,8 +26,13 @@ var ailerons : float = 0
 @export var body_drag : float = 1
 @export var roll_dampening : float = 2
 
+func _ready() -> void:
+	#set_sleeping(true)
+	pass
+
 func _physics_process(delta: float) -> void:
 	HUD_debug.text = ""
+	
 	process_input(delta)
 	aerodynamic_update(delta)
 
