@@ -27,8 +27,13 @@ var ailerons : float = 0
 @export var roll_dampening : float = 2
 
 func _ready() -> void:
-	#set_sleeping(true)
-	pass
+	freeze = true
+	if Lobby.is_playing_online() == false:
+		ready_for_play()
+
+func ready_for_play() -> void:
+	if freeze == true:
+		freeze = false
 
 func _physics_process(delta: float) -> void:
 	HUD_debug.text = ""
@@ -59,10 +64,12 @@ func process_input(delta : float) -> void:
 	if Input.get_action_strength("reset_pitch") > 0:
 		elevator = 0
 	
-	HUD_debug.text += "elevator: %f, ailerons: %f \n" % [elevator, ailerons]
-	
 	throttle_input = Input.get_axis("throttle_down", "throttle_up")
 	throttle = minf(maxf(throttle + throttle_sensitivity * throttle_input, 0),1)
+	
+	HUD_debug.text += "elevator: %f, ailerons: %f, throttle %f\n" % [elevator, ailerons, throttle]
+	
+
 
 func aerodynamic_update(delta : float):
 	# Thrust Calculations

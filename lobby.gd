@@ -38,6 +38,9 @@ func initialize_client(in_ip:String):
 	multiplayer.connected_to_server.connect(on_server_connected)
 	multiplayer.connection_failed.connect(on_server_connected_failed)
 
+func is_playing_online() -> bool:
+	return multiplayer.has_multiplayer_peer() == false || multiplayer.multiplayer_peer.get_connection_status() == 0
+
 func on_server_connected():
 	server_connected.emit()
 	

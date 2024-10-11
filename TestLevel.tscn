@@ -1,22 +1,24 @@
-[gd_scene load_steps=12 format=3 uid="uid://bjrs1env65som"]
+[gd_scene load_steps=14 format=3 uid="uid://bjrs1env65som"]
 
 [ext_resource type="Script" path="res://test_level.gd" id="1_o5sma"]
 [ext_resource type="Texture2D" uid="uid://dkk2138ifdtxi" path="res://addons/kenney_prototype_textures/dark/texture_03.png" id="1_pafyq"]
 [ext_resource type="PackedScene" uid="uid://sqi3ggdf8gcs" path="res://AirplaneV1.tscn" id="2_bg3cc"]
 [ext_resource type="PackedScene" uid="uid://cauyw4d3fwg6e" path="res://player_camera.tscn" id="4_pkceh"]
+[ext_resource type="Texture2D" uid="uid://dyqba7wvmbqof" path="res://icon.svg" id="4_sqdly"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_itv2u"]
 uv2_padding = 2.39
 size = Vector2(100000, 100000)
-center_offset = Vector3(0, -0.5, -3)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6ihpq"]
 albedo_texture = ExtResource("1_pafyq")
 uv1_scale = Vector3(221.455, 221.455, 221.455)
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_88vw1"]
-sky_top_color = Color(0.069909, 0.47507, 0.711932, 1)
-ground_bottom_color = Color(8.0619e-07, 0.204955, 0.204574, 1)
+sky_top_color = Color(0.407435, 0.7391, 0.981741, 1)
+sky_horizon_color = Color(0.380814, 0.746064, 1, 1)
+ground_bottom_color = Color(0.534325, 0.279574, 0.00273027, 1)
+ground_horizon_color = Color(0.470106, 0.20651, 0.118286, 1)
 sun_angle_max = 28.07
 
 [sub_resource type="Sky" id="Sky_okwc5"]
@@ -33,6 +35,10 @@ friction = 0.0
 [sub_resource type="BoxShape3D" id="BoxShape3D_mxrn6"]
 size = Vector3(100000, 1, 100000)
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_xppgd"]
+top_radius = 0.1
+height = 12.425
+
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_o5sma")
 
@@ -44,7 +50,12 @@ surface_material_override/0 = SubResource("StandardMaterial3D_6ihpq")
 environment = SubResource("Environment_i1ygb")
 
 [node name="Airplane1" parent="." instance=ExtResource("2_bg3cc")]
-transform = Transform3D(1, 0, 0, 0, 0.999999, 0, 0, 0, 0.999999, 0, 0.0646519, 0)
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 0.999999, 0, 0, 0, 0.999999, 0, 1.53013, -30)
+
+[node name="Sprite3D" type="Sprite3D" parent="Airplane1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.13199, 0)
+texture = ExtResource("4_sqdly")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 physics_material_override = SubResource("PhysicsMaterial_fls1n")
@@ -55,3 +66,11 @@ shape = SubResource("BoxShape3D_mxrn6")
 [node name="PlayerCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("4_pkceh")]
 default_distance = 20.0
 target = NodePath("../Airplane1")
+
+[node name="Airplane2" parent="." instance=ExtResource("2_bg3cc")]
+unique_name_in_owner = true
+transform = Transform3D(-1, -1.8895e-05, 0.000304101, -1.87777e-05, 1, 0.000359417, -0.000304108, 0.000359411, -1, -0.0412292, 1.73026, 30.061)
+
+[node name="Center" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.99532, 0)
+mesh = SubResource("CylinderMesh_xppgd")

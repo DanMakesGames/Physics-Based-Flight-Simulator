@@ -12,6 +12,7 @@ friction = 0.0
 [node name="Airplane" type="RigidBody3D"]
 mass = 3500.0
 physics_material_override = SubResource("PhysicsMaterial_ghqgg")
+can_sleep = false
 angular_damp = 1.0
 script = ExtResource("1_22vd2")
 pitch_sensitivity = 1.0

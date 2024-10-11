@@ -19,9 +19,13 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		mouse_velocity = event.velocity
-		print("%v" % event.screen_velocity)
-
+		
 func _process(delta: float) -> void:
+	if Input.is_action_just_released("camera_next_player"):
+		if target == %Airplane1:
+			target = %Airplane2
+		else:
+			target = %Airplane1
 	is_freelook = Input.is_action_pressed("freelook")
 	
 	if is_freelook:
@@ -51,5 +55,3 @@ func _process(delta: float) -> void:
 		position = offset_position + position
 	
 	quaternion = Quaternion(total_rotation.orthonormalized())
-	
-	
