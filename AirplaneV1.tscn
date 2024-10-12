@@ -9,7 +9,7 @@ friction = 0.0
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_gctro"]
 
-[node name="Airplane" type="RigidBody3D"]
+[node name="Airplane" type="RigidBody3D" groups=["network_sync"]]
 mass = 3500.0
 physics_material_override = SubResource("PhysicsMaterial_ghqgg")
 can_sleep = false

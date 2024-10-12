@@ -7,10 +7,6 @@ extends RigidBody3D
 @onready var elevator_wing = $elevator_wing
 @onready var vertical_stabilizer_wing = $vertical_stabilizer_wing
 
-var pitch_input : float = 0
-var roll_input : float = 0
-var throttle_input : float = 0
-
 var throttle : float = 0
 var elevator : float = 0
 var ailerons : float = 0
@@ -36,40 +32,63 @@ func ready_for_play() -> void:
 		freeze = false
 
 func _physics_process(delta: float) -> void:
-	HUD_debug.text = ""
+	pass
+	#HUD_debug.text = ""
 	
-	process_input(delta)
-	aerodynamic_update(delta)
+	#process_input(delta)
+	#aerodynamic_update(delta)
 
 # gather and digest input
-func process_input(delta : float) -> void:
-	pitch_input = Input.get_axis("pitch_up", "pitch_down")
-	if is_zero_approx(pitch_input):
-		var reduce_value = pitch_sensitivity * delta * signf(elevator)
-		if signf(elevator - reduce_value) != signf(elevator):
-			elevator = 0
+func process_input(input : Dictionary, delta : float) -> void:
+	if input.has("pitch"):
+		var pitch_input = input["pitch"]
+		if is_zero_approx(pitch_input):
+			var reduce_value = pitch_sensitivity * delta * signf(elevator)
+			if signf(elevator - reduce_value) != signf(elevator):
+				elevator = 0
+			else:
+				elevator -= reduce_value
 		else:
-			elevator -= reduce_value
-	else:
-		elevator += pitch_input * pitch_sensitivity * delta
-	elevator = clampf(elevator, -1, 1)
+			elevator += pitch_input * pitch_sensitivity * delta
+		elevator = clampf(elevator, -1, 1)
 	
-	roll_input = Input.get_axis("roll_left", "roll_right")
-	ailerons = roll_input
-	ailerons = clampf(ailerons, -1, 1)
+	if input.has("roll"):
+		ailerons = input["roll"]
+		ailerons = clampf(ailerons, -1, 1)
 	
-	if Input.get_action_strength("reset_roll") > 0:
-		ailerons = 0
-	
-	if Input.get_action_strength("reset_pitch") > 0:
-		elevator = 0
-	
-	throttle_input = Input.get_axis("throttle_down", "throttle_up")
-	throttle = minf(maxf(throttle + throttle_sensitivity * throttle_input, 0),1)
+	if input.has("throttle"):
+		var throttle_input = input["throttle"]
+		throttle = minf(maxf(throttle + throttle_sensitivity * throttle_input, 0),1)
 	
 	HUD_debug.text += "elevator: %f, ailerons: %f, throttle %f\n" % [elevator, ailerons, throttle]
 	
 
+func _get_local_input()->Dictionary:
+	var input := {}
+	
+	input["pitch"] = Input.get_axis("pitch_up", "pitch_down")
+	input["roll"] = Input.get_axis("roll_left", "roll_right")
+	input["throttle"] = Input.get_axis("throttle_down", "throttle_up")
+	
+	return input
+
+func _network_process(input:Dictionary) -> void:
+	HUD_debug.text = ""
+	#var fixed_delta = 1.0 / ProjectSettings.get_setting("physics/common/physics_ticks_per_second") 
+	#process_input(input, fixed_delta)
+	#aerodynamic_update(fixed_delta)
+	
+func _save_state() -> Dictionary:
+	var state := {}
+	state["throttle"] = throttle
+	state["ailerons"] = ailerons
+	state["elevator"] = elevator
+	return state
+
+func _load_state(state: Dictionary) -> void:
+	throttle = state["throttle"]
+	ailerons = state["ailerons"]
+	elevator = state["elevator"]
 
 func aerodynamic_update(delta : float):
 	# Thrust Calculations

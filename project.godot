@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="AOFS"
-run/main_scene="res://TestLevel.tscn"
+run/main_scene="res://MainMenu.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -23,7 +23,11 @@ SyncDebugger="*res://addons/godot-rollback-netcode/SyncDebugger.gd"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot-rapier3d/plugin.cfg", "res://addons/godot-rollback-netcode/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot-rollback-netcode/plugin.cfg")
+
+[global_group]
+
+network_sync=""
 
 [input]
 
@@ -89,7 +93,5 @@ camera_next_player={
 
 [physics]
 
-common/physics_ticks_per_second=240
-common/max_physics_steps_per_frame=24
 3d/physics_engine="Rapier3D"
 3d/solver/solver_iterations=26

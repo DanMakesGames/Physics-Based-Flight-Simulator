@@ -7,6 +7,7 @@ const MAX_CLIENTS = 8
 signal server_connected
 signal server_connected_failed
 
+# sever side
 var players_loaded : int = 0
 
 func _ready() -> void:
@@ -39,7 +40,7 @@ func initialize_client(in_ip:String):
 	multiplayer.connection_failed.connect(on_server_connected_failed)
 
 func is_playing_online() -> bool:
-	return multiplayer.has_multiplayer_peer() == false || multiplayer.multiplayer_peer.get_connection_status() == 0
+	return multiplayer.has_multiplayer_peer() == true && multiplayer.multiplayer_peer.get_connection_status() != 0
 
 func on_server_connected():
 	server_connected.emit()
@@ -51,7 +52,7 @@ func connect_to_server(input_IP : String ):
 	initialize_client(input_IP)
 	
 func on_peer_connected(peer_id):
-	print("peer connected id: %d" % peer_id)
+	print("peer connected peer_id: %d" % peer_id)
 	SyncManager.add_peer(peer_id)
 
 func on_peer_disconnected(peer_id):
@@ -69,7 +70,7 @@ func start_game_server():
 		return
 	# let server gather some ping data if it hasnt already.
 	await(2.0)
-	print("Start Game")
+	print("Begin Game")
 	load_game.rpc()
 
 @rpc("authority", "call_local", "reliable")
@@ -82,7 +83,7 @@ func player_finished_loading():
 	var required_loaded = multiplayer.get_peers().size() + 1
 	print("Player Loaded %d / %d" % [players_loaded, required_loaded])
 	if players_loaded >= required_loaded:
-		print("Start Game")
+		print("Start Game Server")
 		SyncManager.start()
 	
 func on_sync_lost():

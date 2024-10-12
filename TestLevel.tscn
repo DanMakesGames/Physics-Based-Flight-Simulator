@@ -39,7 +39,7 @@ size = Vector3(100000, 1, 100000)
 top_radius = 0.1
 height = 12.425
 
-[node name="Node3D" type="Node3D"]
+[node name="Node3D" type="Node3D" groups=["network_sync"]]
 script = ExtResource("1_o5sma")
 
 [node name="Floor" type="MeshInstance3D" parent="."]
@@ -51,7 +51,7 @@ environment = SubResource("Environment_i1ygb")
 
 [node name="Airplane1" parent="." instance=ExtResource("2_bg3cc")]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 0.999999, 0, 0, 0, 0.999999, 0, 1.53013, -30)
+transform = Transform3D(1, 0, 0, 0, 0.999999, 0, 0, 0, 0.999999, 0, 70, -30)
 
 [node name="Sprite3D" type="Sprite3D" parent="Airplane1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.13199, 0)
@@ -66,10 +66,6 @@ shape = SubResource("BoxShape3D_mxrn6")
 [node name="PlayerCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("4_pkceh")]
 default_distance = 20.0
 target = NodePath("../Airplane1")
-
-[node name="Airplane2" parent="." instance=ExtResource("2_bg3cc")]
-unique_name_in_owner = true
-transform = Transform3D(-1, -1.8895e-05, 0.000304101, -1.87777e-05, 1, 0.000359417, -0.000304108, 0.000359411, -1, -0.0412292, 1.73026, 30.061)
 
 [node name="Center" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.99532, 0)
