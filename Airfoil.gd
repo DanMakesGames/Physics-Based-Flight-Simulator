@@ -12,7 +12,7 @@ extends Node3D
 @export var drag_zero_AoA : float = 0.025
 @export var drag_multiplier : float = 1.0
 @export var lift_multiplier : float = 1.0
-
+@export var debug_print : bool = false
 ## in degrees
 var camber : float = 0
 
@@ -31,7 +31,7 @@ func update_physics(body : RigidBody3D, delta:float):
 	var AoA = rad_to_deg(local_flow_velocity.angle_to(Vector3(0,0,1))) * AoA_sign
 	AoA += camber
 	
-	if absf(AoA) > AoA_max and is_zero_approx(local_flow_velocity.length()) != true:
+	if absf(AoA) > AoA_max and is_zero_approx(local_flow_velocity.length()) != true and debug_print:
 		print("Stall: %s AOA: %f->%f Lift_Orth: %f, Drag_Orth: %f" % [name,last_AoA, AoA, lift_out.dot(body.basis.y), drag_out.dot(body.basis.y)] )
 	
 	# Lift

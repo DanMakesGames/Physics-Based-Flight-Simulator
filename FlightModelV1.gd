@@ -22,23 +22,17 @@ var ailerons : float = 0
 @export var body_drag : float = 1
 @export var roll_dampening : float = 2
 
-func _ready() -> void:
-	freeze = true
-	if Lobby.is_playing_online() == false:
-		ready_for_play()
-
 func ready_for_play() -> void:
-	if freeze == true:
-		freeze = false
+	freeze = false
+	sleeping = false
 
 func _physics_process(delta: float) -> void:
 	pass
 	#HUD_debug.text = ""
-	
 	#process_input(delta)
 	#aerodynamic_update(delta)
 
-# gather and digest input
+# digest input
 func process_input(input : Dictionary, delta : float) -> void:
 	if input.has("pitch"):
 		var pitch_input = input["pitch"]
@@ -74,21 +68,38 @@ func _get_local_input()->Dictionary:
 
 func _network_process(input:Dictionary) -> void:
 	HUD_debug.text = ""
-	#var fixed_delta = 1.0 / ProjectSettings.get_setting("physics/common/physics_ticks_per_second") 
+	var fixed_delta = 1.0 / ProjectSettings.get_setting("physics/common/physics_ticks_per_second") 
 	#process_input(input, fixed_delta)
 	#aerodynamic_update(fixed_delta)
 	
 func _save_state() -> Dictionary:
 	var state := {}
+	
 	state["throttle"] = throttle
 	state["ailerons"] = ailerons
 	state["elevator"] = elevator
+	
+	var direct_state = PhysicsServer3D.body_get_direct_state(get_rid())
+	state["transform"] = direct_state.transform
+	state["velocity"] = direct_state.linear_velocity
+	state[""]
+	
+	print("save %d, %d, %v" % [SyncManager._current_tick,multiplayer.get_unique_id(), transform.origin])
 	return state
 
 func _load_state(state: Dictionary) -> void:
 	throttle = state["throttle"]
 	ailerons = state["ailerons"]
 	elevator = state["elevator"]
+	
+	ready_for_play()
+	var direct_state = PhysicsServer3D.body_get_direct_state(get_rid())
+	print("load %d, %d, %v" % [SyncManager._current_tick - SyncManager._rollback_ticks,multiplayer.get_unique_id(), direct_state.transform.origin])
+
+func _on_receive_state(state: Dictionary, tick: int) -> void:
+	# compare new state against old state at tick
+	# if different enough, trigger a rollback 
+	pass
 
 func aerodynamic_update(delta : float):
 	# Thrust Calculations

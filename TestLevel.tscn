@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://bjrs1env65som"]
+[gd_scene load_steps=16 format=3 uid="uid://bjrs1env65som"]
 
 [ext_resource type="Script" path="res://test_level.gd" id="1_o5sma"]
 [ext_resource type="Texture2D" uid="uid://dkk2138ifdtxi" path="res://addons/kenney_prototype_textures/dark/texture_03.png" id="1_pafyq"]
@@ -39,6 +39,10 @@ size = Vector3(100000, 1, 100000)
 top_radius = 0.1
 height = 12.425
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_8tiko"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_rbpot"]
+
 [node name="Node3D" type="Node3D" groups=["network_sync"]]
 script = ExtResource("1_o5sma")
 
@@ -70,3 +74,12 @@ target = NodePath("../Airplane1")
 [node name="Center" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.99532, 0)
 mesh = SubResource("CylinderMesh_xppgd")
+
+[node name="RigidBody3D" type="RigidBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
+shape = SubResource("SphereShape3D_8tiko")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 93.1753, 0)
+mesh = SubResource("BoxMesh_rbpot")
