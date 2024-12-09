@@ -12,7 +12,8 @@ https://streamable.com/v6j5dh
 
 ### Notable Files
 [`FlightModelV1.gd`](FlightModelV1.gd): Represents the airplane's body.
-['Airfoil.gd'](Airfoil.gd): Represents a wing with a control surface.
+
+[`Airfoil.gd`](Airfoil.gd): Represents a wing with a control surface.
 
 ### Sources
 * https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/learn-about-aerodynamics/
